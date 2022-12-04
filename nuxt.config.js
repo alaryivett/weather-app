@@ -22,7 +22,6 @@ export default {
 	},
 
 	css: [
-		'~static/fonts/fonts.sass',
 		'~static/styles/styles.sass'
 	],
 
@@ -35,6 +34,13 @@ export default {
 		'@nuxtjs/eslint-module',
 		'@nuxtjs/style-resources'
 	],
+
+	styleResources: {
+		sass: [
+			'~assets/_variables.sass'
+		]
+	},
+
 
 	// Build Configuration: https://go.nuxtjs.dev/config-build
 	build: {

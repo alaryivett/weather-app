@@ -1,9 +1,7 @@
 <template lang="pug">
 .wrapper
 	header
-		Icon(
-			iconName='logo'
-		)
+		Icon(iconName='logo')
 		h1 {{ constants.messages.title }}
 	nuxt
 </template>
@@ -24,9 +22,9 @@ export default {
 .wrapper
 	width: 100%
 	height: 100vh
-	background-color: #161B30
+	background-color: $bg
 	header
-		background-color: #2A2F45
+		background-color: $header
 		padding: 17px 23px
 		display: flex
 		align-items: center
@@ -34,6 +32,6 @@ export default {
 		h1
 			font-size: 16px
 			font-family: 'SFPro700'
-			color: white
+			color: $white
 			margin: 0
 </style>

@@ -2,8 +2,7 @@
 node_modules
 /dist
 /.nuxt
-.eslintignore
-.eslintcache
+/.eslintcache
 
 
 # local env files
