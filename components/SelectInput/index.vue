@@ -1,6 +1,7 @@
 <template lang="pug">
 .select-input
 	input.select-input__input(
+		v-model="value"
 		type='text'
 		:placeholder='constants.messages.placeholder'
 		@focusin='showSelect'
@@ -8,25 +9,45 @@
 	)
 	SlideUpDown(
 		class='select-input__select'
-		:active='isSelectShow'
+		:active='isSelectShow && !!list.length'
 	)
 		ul
-			li(v-for='city in cities') {{ city }}
+			li(v-for='item in list')
+				span {{ getSimilarPart(item) }}
+				span {{ getDifferentPart(item) }}
 </template>
 
 <script>
 import SlideUpDown from 'vue-slide-up-down'
-import constants from '~/constants/components/select-input'
+import constants from './constants'
 
 export default {
 	components: {
 		SlideUpDown
 	},
+	props: {
+		list: {
+			type: Array,
+			default () { return [] }
+		},
+		value: {
+			type: String,
+			default: ''
+		}
+	},
 	data () {
 		return {
 			constants,
-			cities: ['Москва', 'Ижевск', 'Санкт-Петербург', 'Новосибирск', 'Казань', 'Астрахань'],
 			isSelectShow: false
+		}
+	},
+	watch: {
+		value (newInputValue) {
+			if (newInputValue.length > 2) {
+				this.showSelect()
+			}
+
+			this.$emit('input', newInputValue)
 		}
 	},
 	methods: {
@@ -35,6 +56,12 @@ export default {
 		},
 		hideSelect () {
 			this.isSelectShow = false
+		},
+		getSimilarPart (item) {
+			return item.slice(0, this.value.length)
+		},
+		getDifferentPart (item) {
+			return item.slice(this.value.length)
 		}
 	}
 }
@@ -53,6 +80,8 @@ export default {
 		padding: 18px 20px 19px
 		font-size: 16px
 		caret-color: $main
+		color: $white
+		font-family: $SFP400
 		transition: border ease-out 0.5s
 		&::placeholder
 			color: $main
@@ -71,4 +100,6 @@ export default {
 			li
 				padding: 20px
 				cursor: pointer
+				span:first-child
+					color: $white
 </style>

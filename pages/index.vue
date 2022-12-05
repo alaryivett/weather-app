@@ -1,24 +1,43 @@
 <template lang="pug">
 .main-page
 	.main-page__input
-		SelectInput
+		SelectInput(
+			:list='cities'
+			@input='getCities'
+			v-model='defaultCity'
+		)
 	.main-page__help-description
 		Icon(iconName='arrow')
 		.main-page__help-description-text
 			span {{ constants.messages.helpDescription.text }}
-			span {{ constants.messages.helpDescription.exampleCity }}
+			span(@click='inputDefaultCity') {{ constants.messages.helpDescription.exampleCity }}
 	.main-page__bookmark
 		.main-page__bookmark-description {{ constants.messages.bookmarkDescription }}
 		Icon(iconName='bookmark')
 </template>
 
 <script>
-import constants from '~/constants/pages/main'
+import constants from './constants'
+import Api from '~/api/api'
 
 export default {
 	data () {
 		return {
-			constants
+			constants,
+			cities: [],
+			defaultCity: ''
+		}
+	},
+	methods: {
+		getCities (inputValue) {
+			if (inputValue.length > 2) {
+				this.cities = Api.getCities(inputValue)
+			} else {
+				this.cities = []
+			}
+		},
+		inputDefaultCity () {
+			this.defaultCity = this.constants.messages.helpDescription.exampleCity
 		}
 	}
 }

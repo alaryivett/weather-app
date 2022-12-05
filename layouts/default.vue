@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import constants from '~/constants/layouts/default'
+import constants from './constants'
 
 export default {
 	data () {
