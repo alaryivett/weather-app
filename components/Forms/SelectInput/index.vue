@@ -1,7 +1,9 @@
 <template lang="pug">
-.select-input
+.select-input(
+	:class="{'select-input_rounded': isSelectShow && !!list.length}"
+)
 	input.select-input__input(
-		v-model="value"
+		v-model="inputValue"
 		type='text'
 		:placeholder='constants.messages.placeholder'
 		@focusin='showSelect'
@@ -12,7 +14,10 @@
 		:active='isSelectShow && !!list.length'
 	)
 		ul
-			li(v-for='item in list')
+			li(
+				v-for='item in list'
+				@click='selectItem(item)'
+			)
 				span {{ getSimilarPart(item) }}
 				span {{ getDifferentPart(item) }}
 </template>
@@ -38,15 +43,16 @@ export default {
 	data () {
 		return {
 			constants,
-			isSelectShow: false
+			inputValue: '',
+			isSelectShow: true
 		}
 	},
 	watch: {
-		value (newInputValue) {
-			if (newInputValue.length > 2) {
-				this.showSelect()
-			}
-
+		value (newValue) {
+			this.$el.childNodes[0].focus()
+			this.inputValue = newValue
+		},
+		inputValue (newInputValue) {
 			this.$emit('input', newInputValue)
 		}
 	},
@@ -62,6 +68,9 @@ export default {
 		},
 		getDifferentPart (item) {
 			return item.slice(this.value.length)
+		},
+		selectItem (item) {
+			this.$emit('selectItem', item)
 		}
 	}
 }
@@ -72,6 +81,10 @@ export default {
 	position: absolute
 	width: 510px
 	overflow-x: hidden
+	&_rounded
+		border-radius: 0 0 5px 5px
+	@media(max-width: 510px)
+		width: 90%
 	&__input
 		width: 100%
 		box-sizing: border-box
@@ -96,7 +109,6 @@ export default {
 			overflow-y: scroll
 			width: 100%
 			background-color: $select
-			border-radius: 0 0 5px 5px
 			li
 				padding: 20px
 				cursor: pointer
